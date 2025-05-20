@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02mapFunc.html</title>
+  </head>
+
+  <script type="text/javascript">
+    function mapTest1(){
+      console.error('mapTest1() called .. 기본 사용법');
+      var oldArray = [1, 2, 3, 4, 5];
+      var newArray = oldArray.map(
+        // 콜백함수의 매개변수는 순서대로 현재값, 인댁스, 호출한 배열을 받을 수 있음.
+        function (currentVal, index, array){
+          console.log(currentVal, index, array);
+          return currentVal * 2; // 리턴 값이 있음.
+        }
+      );
+      console.log('newArray: ' + newArray);
+    }
+
+    function mapTest2(){
+      console.error('mapTest2() called .. JSON 객체 배열 활용하기');
+      var oldJSON = [
+                    { name : "이건", salary :"50000000"},  
+                    { name : "홍길동", salary :"1000000"},  
+                    { name : "임신구", salary :"3000000"},  
+                    { name : "이승룡", salary :"2000000"}
+                  ];
+      var newJSON = oldJSON.map(
+        // 콜백함수의 매개변수는 순서대로 현재값, 인댁스, 호출한 배열을 받을 수 있음.
+        function (currentVal){
+          var returnObj = {}; // 빈 객체 생성
+          returnObj[currentVal.name] = currentVal.salary;
+          return returnObj; 
+        }
+      );
+      console.log(newJSON);
+      }
+    
+      function mapTest3(){
+      console.error('mapTest3() called .. 화살표 함수 사용하기');
+      var oldArray = [1, 2, 3, 4, 5];
+      // 현재 루프의 요소를 제곱한 결과를 반환하여 새로운 배열로 생성
+      var newArray = oldArray.map((num) => {
+        return Math.pow(num, 2);
+        }
+      );
+      console.log(newArray);
+      }
+  </script>
+  
+  <body>
+    <h2>고차함수 - mapTest()</h2>
+    <div>
+      <input type="button" onclick="mapTest1();" value="mapTest1">
+      <input type="button" onclick="mapTest2();" value="mapTest2">
+      <input type="button" onclick="mapTest3();" value="mapTest3">
+    </div>
+  </body>
+</html>

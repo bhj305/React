@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04reduceFunc.html</title>
+  </head>
+
+  <script>
+    // reduce()함수: 배열을 순회하면서 요소의 값을 하나의 값으로 줄여서 반환. 콜백함수의 매개변수가 4개이다.
+    //  reduceTest1. 콜백함수에서 사용할 초기값이 없고, 반환값도 없는 형태 
+    (function reduceTest1(){
+      console.error('reduceTest1() called .. 기본사용법');
+      var oldArray = [0,1,2,3,4];
+      oldArray.reduce(function(previousVal, currentVal, index, array){
+        console.log(previousVal, currentVal, index);
+      });
+    })(); // 함수를 소괄호로 묶어주면 선언과 동시에 호출됨. 차후 별도로 호출할 수 없음. 주로 테스트용으로 사용됨. 
+
+    // 2. 콜백함수에서 사용할 초기값은 없지만, 반환값은 있는 상태
+    function reduceTest2(){
+      console.error("reduceTest2() called .. return값 사용하기 ");
+      var oldArray = [0,1,2,3,4];
+      var sum = oldArray.reduce(function (previousVal, currentVal) {
+        // previousVal: 0, 1, 3, 6
+        // currentVal: 1, 2, 3, 4
+        console.log(previousVal, currentVal);
+        return previousVal + currentVal;
+      });
+      console.log(sum);
+    }
+
+    // 3. 콜백함수에서 사용할 초기값이 있고, 반환값이 있는 상태 
+    function reduceTest3(){
+      console.error("reduceTest3() called .. 초기값 사용하기 ");
+      var oldArray = [0,1,2,3,4];
+      var sum = oldArray.reduce(function (previousVal, currentVal) {
+        console.log(previousVal, currentVal);
+        return previousVal + currentVal;
+      }, 2); // 초기값 2 주기 
+      console.log(sum);
+      }
+
+      // 4. 반환값과 초기값을 둘다 가지고 있는 콜백함수
+      function reduceTest4(){
+      console.error("reduceTest4() called .. 배열에서 중복값을 제거하는 함수 구현");
+      var oldArray = [0,1,2,3,3,3,4,5,5,6,6];
+      // previousVal: [], [0] ,[0,1] ...
+      // currentVal: 0, 1, 2, ... 
+      var newArray = oldArray.reduce(
+        function (previousVal, currentVal) {
+          // 배열에서 특정원소를 검색해서 찾지 못한 경우 -1
+          if (previousVal.indexOf(currentVal) < 0) {
+            previousVal.push(currentVal);
+          }
+          return previousVal;
+      }, []); // 초기값 빈 배열로 주기 
+      console.log(newArray);
+      }
+  </script>
+
+  <body>
+    <h2>고차함수 - reduce()</h2>
+    <div>
+      <!-- 이미 script에서 사용되었으므로 별도로 호출할 수 없음. -->
+      <!-- <input type="button" onclick="reduceTest1();" value="reduceTest1" /> -->
+      <input type="button" onclick="reduceTest2();" value="reduceTest2" />
+      <input type="button" onclick="reduceTest3();" value="reduceTest3" />
+      <input type="button" onclick="reduceTest4();" value="reduceTest4" />
+    </div>
+  </body>
+</html>

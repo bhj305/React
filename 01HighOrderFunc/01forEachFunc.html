@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01forEachFunc.html</title>
+  </head>
+<!-- head 와 body 사이에 script 생성 -->
+  <script>
+    function forEachTest1(){
+      console.error("forEachTest1() called .. 기본 사용법"); // 코드 확인을 위해 error 사용
+      var oldArray = [1, 2, 3, 4, 5];
+      // index는 0 부터 시작 
+      oldArray.forEach(function(currentVal, index, array){
+        console.log('현재 값: ' + currentVal, ', 인덱스:' + index + ', 배열: ' + array);
+      });
+    };
+
+    function forEachTest2(){
+      console.error("forEachTest2() called .. 배열 요소의 합계");
+      var oldArray = [1, 2, 3, 4, 5];
+      var sum = 0; // 초기값 선언 
+      function getSum(currentVal){
+        sum += currentVal;
+      }
+      oldArray.forEach(getSum);
+      console.log(sum);
+    }
+
+    function forEachTest3(){
+      console.error('forEachTest3() called .. 매개변수 사용하기');
+      var oldArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      var sum = 0; 
+      var myArgs = {min:3, max:7}; // 콜백함수에서 사용할 인자를 객체로 정의
+      
+      // 콜백함수 정의 
+      function getSum(currentVal){
+        if(currentVal >= this.min && currentVal <= this.max){
+          sum += currentVal;
+        }
+
+      }
+      oldArray.forEach(getSum, myArgs);
+      console.log(sum); // 3에서 7사이의 값 더해주기: 25 출력됨
+    }
+
+
+  </script>
+
+  <body>
+    <h2>고차함수 - map()</h2>
+    <div>
+      <input type="button" onclick="forEachTest1();" value="forEach1">
+      <input type="button" onclick="forEachTest2();" value="forEach2">
+      <input type="button" onclick="forEachTest3();" value="forEach3">
+    </div>
+  </body>
+</html>

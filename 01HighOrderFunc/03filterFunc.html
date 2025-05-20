@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+
+  <script>
+    function filterTest1(){
+      console.error('filterTest1() called .. 조건에 맞는 엘리먼트만 추출하기 ');
+      var oldArray = [1, 2, 3, 4, 5];
+      var newArray = oldArray.filter(function(currentVal){
+        // map 과 동일하게 배열 크기 만큼 반복하지만, 3 이하인 값만 반환하여 새로운 배열에 저장함.
+        console.log("현재 원소", currentVal);
+        return currentVal <= 3;
+      });
+      console.log(newArray);
+    }
+
+    function filterTest2(){
+      console.error('filterTest2() called .. JSON 객체형 배열 사용 및 검색');
+      // 객체형 배열 선언
+      var oldJSONArray = [
+                    { name : "혜빈", salary :"100000"},  
+                    { name : "제인", salary :"200000"},  
+                    { name : "나연", salary :"300000"},  
+                    { name : "주이", salary :"400000"},
+                    { name : "아인", salary :"500000"},
+                    { name : "낸시", salary :"600000"}
+                  ];
+      var newJSONArray = oldJSONArray.filter(
+        function (currentVal){
+          return currentVal.salary >= 300000; // 급여가 300000원이상인 객체만 추출하여 반환. 반환된 값은 새로운 배열에 추가됨.
+        }, undefined);
+      console.log(newJSONArray);
+      }
+
+      function filterTest3(){
+      console.error('filterTest3() called .. thisArgs 매개변수 사용하기');
+      var oldArray = [1, 2, 3, 4, 5, 50, 100];
+      var thisArgs = {min: 1, max: 10};
+      function getMinMax(value){
+        return value >= this.min && value <= this.max;
+      };
+      var newArray = oldArray.filter(getMinMax, thisArgs);
+      console.log('thisArgs 사용 결과: ', newArray);
+
+      }
+  </script>
+
+  <body>
+    <h2>고차함수 - filter()</h2>
+    <div>
+      <input type="button" onclick="filterTest1();" value="filterTest1">
+      <input type="button" onclick="filterTest2();" value="filterTest2">
+      <input type="button" onclick="filterTest3();" value="filterTest3">
+    </div>
+  </body>
+
+</html>
