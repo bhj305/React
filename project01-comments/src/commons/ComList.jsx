@@ -1,34 +1,63 @@
 import React from "react";
+import { useState } from "react";
+import ComEdit from "./ComEdit";
 
 function ComList(props){
   const lists = [];
-  for (let i = 0; i < props.myData.length; i++) {
-    let row = props.myData[i];
+  const [showEdit, setShowEdit] = useState(false);
+  const [editNo, setEditNo] = useState(null);
+
+  // 중복 수정버튼 클릭 여부 확인 
+  const checkEdit =(no) => {
+    if(showEdit === true){
+      alert("현재 수정모드 입니다. 수정취소를 눌러주세요.");
+      setShowEdit(true);
+    } else {
+      setEditNo(no);
+    }
+  }
+
+  // 리스트 출력
+  for (let row of props.myData) { // map 함수 사용 권장
     lists.push(
-      <table id="boardTable" key={row.no}>
-        <tbody>
-          <tr>
-            <td>{row.no}</td>
-            <td>Writer: {row.writer}</td>
-            <td>
-              Date: {row.date}
-              <button type="button" onClick= { (e) => {
-                e.preventDefault();
-                props.changeMode('edit', row.no);
-              }}>수정</button>							
-              <button type="button" onClick= {(e) => {
-                e.preventDefault();
-                if(window.confirm('삭제할까요?')){
-                  props.onDelete(row.no);
-                }
-              }}>삭제</button>
-            </td>
-          </tr>
-          <tr>
-            <td colSpan="3" className="subject">{row.contents}</td>
-          </tr>
-        </tbody>
-    </table>
+      <div key = {row.no}> 
+      { 
+        editNo == row.no ? null :
+          <table id="boardTable" key={row.no}>
+            <tbody>
+              <tr>
+                <td>{row.no}</td>
+                <td>Writer: {row.writer}</td>
+                <td>
+                  {row.date}
+                  <button type="button" onClick= { (event) => {
+                    event.preventDefault();
+                    setShowEdit(!showEdit);
+                    checkEdit(row.no);
+                    console.log(showEdit);
+                  }}>수정</button>							
+                  <button type="button" onClick= {() => {
+                    if(window.confirm('삭제하시겠습니까?')){
+                      props.onDeleteComment(row.no);
+                    }
+                  }}>삭제</button>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="subject">{row.comment}</td>
+              </tr>
+            </tbody>
+        </table>
+      }
+      {/* 수정할 댓글인 경우 */}
+      {
+        editNo !== row.no ? null : 
+        <ComEdit no={row.no} writer={row.writer} comment={row.comment}
+          onEditComment = {props.onEditComment}
+          showEdit = { showEdit } setShowEdit = { setShowEdit}
+          editNo = {editNo} setEditNo ={setEditNo} />
+      }
+    </div>
     )
   }
   return (<>

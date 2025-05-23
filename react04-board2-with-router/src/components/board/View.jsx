@@ -1,9 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 
 function View(props){
+  // useParams: 컴포넌트를 라우터 처리할 때 중첩된 구조내에서 :no 와 같이 사용된 파라미터의 값을 얻어올 수 있는 hook
   var params = useParams();
   console.log("파라미터", params.no);
 
+  // reduce() 함수는 배열의 크기만큼 반복하여 조건에 맞는 하나의 값을 반환함.
   let vi = props.boardData.reduce((prev, curr) => {
     if(curr.no === Number(params.no)){
       prev = curr; // curr값을 prev에 넣기 
@@ -34,6 +36,7 @@ function View(props){
 
   const goPrev = () => {
     if(readNum-1 === 0){
+      
       prevNum = 1;
       alert("이전 페이지가 없습니다.");
     }
@@ -110,8 +113,19 @@ function View(props){
           </tr>
         </tbody>
       </table>
-      <Link to = { "/view/" + prevNum}>이전글1</Link>
-      <Link to = { "/view/" + nextNum}>다음글1</Link>
+      {/* <Link to = { "/view/" + prevNum}>이전글1</Link>
+      <Link to = { "/view/" + nextNum}>다음글1</Link> */}
+      {/* onClick을 통해 goPrev(), goNext() 사용하기 */}
+      <Link onClick={(e) => {
+        e.preventDefault(); // 이거 안해주면 걍 자동으로 이전글없음 뜸 ;;; 이벤트 멈춰주는 효과
+        goPrev();
+      }}>이전글1</Link>
+      <Link onClick={(e) =>{
+        e.preventDefault();
+        goNext();
+      }}>다음글1</Link>
+
+
 
       <a href="/" onClick={(e) => {
         e.preventDefault();

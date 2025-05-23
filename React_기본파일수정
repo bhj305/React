@@ -1,0 +1,12 @@
+프로젝트 파일 열어서
+1. App.css, index.css 내용 모두 삭제
+2. main.jsx 는 밑에처럼 세팅 
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <App />
+)
+
+4. App.jsx 기본형으로 덮어씌우기

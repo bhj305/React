@@ -123,7 +123,7 @@ const NotFound = () => {
 }
 
 
-function Apddp() { //App
+function App() { //App
   return (
     <div className='App'>
       <h1>React 기본형</h1>

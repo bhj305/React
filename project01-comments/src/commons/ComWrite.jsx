@@ -1,17 +1,31 @@
 import React from "react";
 
 function ComWrite(props){
-  return (<>
-    <form onSubmit={(event) => {
-      event.preventDefault();
-//  이벤트 객체를 통해 폼 값 가져오기 
-      let writer = event.target.writer.value;
-      let comment = event.target.comment.value;
-      event.target.writer.value = '';
-      event.target.comment.value = '';
-      props.writeAction(writer,comment);
+  
+  const writeProcess = (event) => {
+    event.preventDefault();
+    let writer = event.target.writer.value;
+    let comment = event.target.comment.value;
 
-    }}>
+    // 폼값 검증
+    if(writer ===''){
+      alert('작성자를 입력해주세요.');
+      event.target.writer.focus();
+      return;
+    }
+    if(comment ===''){
+      alert('댓글 내용을 입력해주세요.');
+      event.target.comment.focus();
+      return;
+    }
+    // 작성
+    props.onWriteComment(writer, comment);
+    event.target.writer.value = '';
+    event.target.comment.value = '';
+  }
+
+  return (<>
+    <form onSubmit={writeProcess}>
       <table id="boardTable">
         <tbody>
           <tr>

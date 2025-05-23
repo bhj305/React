@@ -1,14 +1,30 @@
+import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function Edit(props){
-  // state와 관련된 데이터와 함수를 모두 받아오기
-  const boardData = props.boardData;
-  const setBoardData = props.setBoardData;
-  const navigate = props.navigate;
-  const nowDate = props.nowDate;
+  // 페이지 이동
+  const navigate = useNavigate();
+  let params = useParams();
+  console.log("수정 idx", params.idx);
 
-  var params = useParams();
+  let requestUrl = 'http://nakja.co.kr/APIs/php7/boardEditJSON.php';
+  let parameter = 'apikey=8fc3a907036472c24a0af58af56bb683&tname=nboard_news&idx='+params.idx;
+
+  const [writer, setWriter] = useState('');
+  const [title, setTitle] = useState('');
+  const [contents, setContents] = useState('');
+
+  useEffect(function (){
+    fetch(requestUrl+"?"+parameter)
+    .then((result) => {
+      return result.json();
+    })
+    .then((json) => {
+      console.log(json)
+    })
+  })
+
   console.log("파라미터", params.no);
   let pno = Number(params.no);
 

@@ -11,6 +11,7 @@ import Write from './components/board/Write';
 import Edit from './components/board/Edit';
 import NotFound from './components/common/NotFound';
 
+// 현재 날짜를 0000-00-00 형식으로 반환
 const nowDate = () => {
   let dateObj = new Date();
   var year = dateObj.getFullYear();
@@ -20,6 +21,7 @@ const nowDate = () => {
 }
 
 function App() {
+// 기존 객체형 배열을 State로 변경
   const [boardData, setBoardData] = useState([
     {no:1, title:'오늘은 React 공부하는 날 ', writer: '홍길동', date: '2025-01-01', contents: 'React를 뽀개봅시다.'},
     {no:2, title:'어제는 Javascript 공부했음 ', writer: '임꺽정', date: '2025-03-03', contents: 'Javascript를 할게 너무 많아욥.'},
@@ -33,10 +35,13 @@ function App() {
       <Routes>
         <Route path='/' element={<List boardData={ boardData }/>} />
         <Route path='/list' element={<List boardData={ boardData }/>} />
+        {/* 열람의 경우 조회할 게시물의 일련번호가 필요하므로 중첩된 라우터 구조로 정의 함. */}
         <Route path='/view'>
+        {/* :no 는 router-dom에서 제공하는 useParams hook을 통해 값을 얻어올 수 있음 */}
           <Route path=':no' element={<View boardData= { boardData} setBoardData={setBoardData} navigate= {navigate} />} />
         </Route>
 
+        {/* Write 컴포넌트 내에서 글쓰기 처리를 할 수 있도록 App.jsx에서 생성한 모든 State와 관련 함수를 Props로 전달한다. */}
         <Route path='/write' element={<Write 
           boardData={boardData} setBoardData={setBoardData}
           nextNo={nextNo} setNextNo={setNextNo}
@@ -50,7 +55,6 @@ function App() {
           />
 
         </Route>
-
         <Route path='*' element={<NotFound />} />
       </Routes>
     </div>
