@@ -8,7 +8,7 @@ function Edit(props){
   let params = useParams();
   console.log("수정 idx", params.idx);
 
-  let requestUrl = 'http://nakja.co.kr/APIs/php7/boardEditJSON.php';
+  let requestUrl = 'http://nakja.co.kr/APIs/php7/boardViewJSON.php';
   let parameter = 'apikey=8fc3a907036472c24a0af58af56bb683&tname=nboard_news&idx='+params.idx;
 
   const [writer, setWriter] = useState('');
@@ -21,25 +21,15 @@ function Edit(props){
       return result.json();
     })
     .then((json) => {
-      console.log(json)
-    })
-  })
-
-  console.log("파라미터", params.no);
-  let pno = Number(params.no);
-
-  let vi = boardData.reduce((prev, curr) => {
-    if(curr.no === pno){
-      prev = curr;
+      console.log(json); 
+      setWriter(json.name);
+      setTitle(json.subject);
+      setContents(json.content);
+    });
+    return () => {
+      console.log('useEffect 실행 => 컴포넌트 언마운트');
     }
-    return prev;
-  }, {});
-
-  const [title, setTitle] = useState(vi.title);
-  const [writer, setWriter] = useState(vi.writer);
-  const [contents, setContents] = useState(vi.contents);
-
-
+  }, []);
 
   return(
     <>
@@ -53,28 +43,34 @@ function Edit(props){
         <form onSubmit={
           (event) => {
             event.preventDefault();
-            // event 객체를 통해 입력값 얻기
+
+            let i = event.target.idx.value; 
             let w = event.target.writer.value;
             let t = event.target.title.value;
             let c = event.target.contents.value;
-            // 추가할 객체 생성
-            let editBoardData = { no:pno, writer:w, title:t, contents:c, date:nowDate() };
 
-            // 복사본을 생성한 후 데이터 추가
-            let copyBoardData = [...boardData];
-            for (let i = 0; i < copyBoardData.length; i++) {
-              // 수정할 객체의 no 과 pno이 일치하면 
-              if(copyBoardData[i].no === pno){
-                // copyBoardData에 editBoardData를 넣어준다.
-                copyBoardData[i] = editBoardData;
-                break;
-              }
-            }
-            // State를 변경한다.
-            setBoardData(copyBoardData);
-            navigate("/list"); // 수정이 끝나면 list로 돌아간다.
+            fetch('http://nakja.co.kr/APIs/php7/boardEditJSON.php',  {
+              method: 'POST',
+              headers : {
+                'Content-type' : 'application/x-www-form-urlencoded;charset=UTF-8',
+              },
+              body : new URLSearchParams({
+                apikey: '8fc3a907036472c24a0af58af56bb683',
+                tname: 'nboard_news',
+                id : 'jsonAPI',
+                name: w,
+                subject: t,
+                content: c,
+                idx : i,
+              }),
+            })
+            .then((response) => response.json())
+            .then((json)=> console.log(json));
+
+            navigate("/view/" + params.idx);
           }
         }>
+          <input type="hidden" name="idx" value={ params.idx} />
           <table id="boardTable">
             <tbody>
               <tr>
