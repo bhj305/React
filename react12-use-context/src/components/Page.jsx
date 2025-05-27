@@ -1,0 +1,23 @@
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
+import Header from "./Header";
+import Content from "./Content";
+import Footer from "./Footer";
+
+//  Header, Content, Footer 임포트
+
+
+const Page = () => {
+  const data = useContext(ThemeContext);
+  console.log('Page컴포넌트', data);
+
+  return (
+    <div className='page'>
+      <Header></Header>
+      <Content></Content>
+      <Footer></Footer>
+    </div>
+  );
+}
+
+export default Page;
