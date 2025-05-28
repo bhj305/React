@@ -26,7 +26,7 @@ function App() {
         console.log("NO such document!");
       }
 
-      console.log('입력 성공');
+      console.log('읽기 성공');
     }
 
 
